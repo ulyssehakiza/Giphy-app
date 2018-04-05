@@ -81,10 +81,7 @@
             //looping through the array of sports to create a button for each
 
             // add function that push the input value into the topcis array
-            // why do the buttons appear larger with the names in them?
-
-
-            topics.forEach(function (topic) {
+                 topics.forEach(function (topic) {
                 console.log(topic);
                 //generate buttons
                 var a = $("<button>" + topic + "</button>")
@@ -92,7 +89,7 @@
                 //adding a class so html can work with it
                 a.addClass("sports")
                 console.log("sports");
-                //Adding a data-attribute with a value of the trees at index i
+                //Adding a data-attribute with a value of the sports at index i
                 a.attr("data-topics", topic)
                 console.log(a);
                 //adding the button to the html
@@ -117,10 +114,7 @@
         $("#addSport").on("click", addSport);
         renderButtons();
         $("body").on("click", ".sports", renderGifs);
-// My suggestion would be to consider adding a 3rd function in your JS that's purpose is to add the new tree (`#trees-input`'s value) into the `topics` array & Then you'd need to listen for the on click event of the `add-tree` button & calls your new function.
-		// adding a 3rd function in your JS that's purpose is to add the new tree (`#trees-input`'s value) into the `topics` array
 
-		// then calls your `renderButtons()` function to update the UI. 
 
     </script>
 
