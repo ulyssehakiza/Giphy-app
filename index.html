@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>GiphyApi</title>
+    <!--Bootstrap-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+    <!--jQuery-->
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.1.1.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <!-- html where old tree gifs will get dumped-->
+                <div id="sports-view"></div>
+
+
+                <!--html form that hold the search box  -->
+                <form id="form">
+                    <label for="sports-input">Name all sports</label>
+                    <input type="text" id="sports-input">
+                    <br>
+
+                    <!-- Search Button triggers new user data to be added -->
+                    <input id="addSport" type="submit" value="Name all Sports">
+                </form>
+
+                <div id="gifs-view"></div>
+
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        //Pseudocode
+        //This web page will have a list of types of trees that the user can click on.
+        //making an array of strings of types of trees
+        var topics = [
+            "Soccer",
+            "Basketball",
+            "Tennis",
+            "Gymnastics",
+            "Golf"
+        ];
+        // when the user clicks, the web site will show 10 giphy images - the images are from the giphy API
+        //here is the public domain giphy APIkey
+        //Here we are building the URL we need to query the database
+        //this is the giphy api we are using
+        function renderGifs(event) {
+            $("#gifs-view").empty();
+            var topic = event.target.attributes[1].nodeValue;
+            var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + topic + "&api_key=dc6zaTOxFJmzC";
+            //run ajax call to the giffy API
+            $.ajax({
+                url: queryURL,
+                method: "GET"
+            })
+                // store all of the retrieved data inside the response object
+                .done(function(response) {
+                    //logging response function to make sure its working
+                    console.log(response);
+                    // Loop over the data array
+                    // render images to the DOM dynamically
+                    $("#gifs-view").empty();
+                    response.data.forEach(function (gif) {
+                        var gifImage = "<img src = '" + gif.images.fixed_height.url + "'/>'";
+                        // console.log(gifImage);
+                        $("#gifs-view").append(gifImage);
+                    });
+                });
+        }
+
+        //creating buttons for the DOM
+        function renderButtons() {
+            $("#sports-view").empty()
+            //looping through the array of sports to create a button for each
+
+            // add function that push the input value into the topcis array
+            // why do the buttons appear larger with the names in them?
+
+
+            topics.forEach(function (topic) {
+                console.log(topic);
+                //generate buttons
+                var a = $("<button>" + topic + "</button>")
+                console.log(a);
+                //adding a class so html can work with it
+                a.addClass("sports")
+                console.log("sports");
+                //Adding a data-attribute with a value of the trees at index i
+                a.attr("data-topics", topic)
+                console.log(a);
+                //adding the button to the html
+                $("#sports-view").append(a)
+                console.log(a);
+
+            });
+        }
+        function addSport(events) {
+            events.preventDefault();
+            //This line will grab the text from the input/search box
+            var sport = $("#sports-input").val();
+            console.log(sport);
+            // 	Then move 1from the textbox is then added to our array
+            topics.push(sport);
+            console.log(topics);
+
+            renderButtons();
+            // 	// calling renderButtons function which creates buttons and adds them to the html, dynamically
+        }
+        // This funtion handles events where one button is clicked
+        $("#addSport").on("click", addSport);
+        renderButtons();
+        $("body").on("click", ".sports", renderGifs);
+// My suggestion would be to consider adding a 3rd function in your JS that's purpose is to add the new tree (`#trees-input`'s value) into the `topics` array & Then you'd need to listen for the on click event of the `add-tree` button & calls your new function.
+		// adding a 3rd function in your JS that's purpose is to add the new tree (`#trees-input`'s value) into the `topics` array
+
+		// then calls your `renderButtons()` function to update the UI. 
+
+    </script>
+
+</body>
+
+</html>
